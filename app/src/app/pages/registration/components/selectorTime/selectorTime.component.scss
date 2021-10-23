@@ -1,0 +1,22 @@
+.slots {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 12px;
+  .slot {
+    padding: 12px 8px;
+    border: 1px solid #eaeaea;
+    cursor: pointer;
+  }
+  .slot:not(.reserved):hover {
+    background-color: lightblue;
+    color: #1f7e9c
+  }
+  .reserved {
+      background-color: #f6f6f6;
+      color: gray;
+  }
+  .selected {
+    background-color: #e2f8ff;
+    color: #1f7e9c
+  }
+}

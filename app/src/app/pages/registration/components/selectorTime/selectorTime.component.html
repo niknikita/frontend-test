@@ -1,0 +1,13 @@
+<div class="slots">
+  <div
+    class="slot"
+    *ngFor="let slot of slotsTime"
+    [class.reserved]="!slot.isFree"
+    [class.selected]="slot.id === selectedSlot?.id && slot.isFree"
+    (click)="selectTime(slot)"
+  >
+    <div class="slot__hour">{{ slot.hour }}:00 - {{ slot.hour + 1 }}:00</div>
+    <div *ngIf="slot.isFree" class="slot__status">Свободно</div>
+    <div *ngIf="!slot.isFree" class="slot__status">Зарезервировано</div>
+  </div>
+</div>

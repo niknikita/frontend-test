@@ -1,0 +1,102 @@
+<div class="dateTime">
+  <mat-card>
+    <mat-label>Выберете дату</mat-label>
+    <mat-calendar (selectedChange)="selectDate($event)"></mat-calendar>
+  </mat-card>
+  <mat-card>
+    <mat-label>Выберете время регистрации</mat-label>
+    <div class="time__block">
+      <app-selectorTime
+        [orders]="orders$"
+        (select)="selectHour($event)"
+      ></app-selectorTime>
+    </div>
+  </mat-card>
+  <mat-card class="registration-form">
+    <mat-label class="registration-form__label"
+      >Заполните форму регистрации</mat-label
+    >
+    <form [formGroup]="registrationForm" action="">
+      <div class="form-control">
+        <label>Имя</label>
+        <input
+          type="text"
+          formControlName="Name"
+          [class.invalid]="isSaved && !isValid('Name')"
+        />
+      </div>
+      <div class="form-control">
+        <label>Телефон</label>
+        <input
+          type="text"
+          prefix="+7 " mask="(000) 000 00 00"
+          formControlName="Phone"
+          [class.invalid]="isSaved && !isValid('Phone')"
+        />
+      </div>
+      <div class="form-control">
+        <label>Марка автомобиля</label>
+        <select
+          matNativeControl
+          formControlName="BrandCar"
+          required
+          [class.invalid]="isSaved && !isValid('BrandCar')"
+          (ngModelChange)="selectBrandCar($event)"
+        >
+          <option *ngFor="let brand of brands$ | async" [value]="brand.id">
+            {{ brand.brandName }}
+          </option>
+        </select>
+      </div>
+      <div class="form-control">
+        <label>Модель автомобиля</label>
+        <select
+          matNativeControl
+          formControlName="ModelCar"
+          required
+          [class.invalid]="isSaved && !isValid('ModelCar')"
+        >
+          <option *ngFor="let model of models$ | async" [value]="model.id">
+            {{ model.modelName }}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-control">
+        <label>Номер автомобиля</label>
+        <input
+          type="text"
+          formControlName="GovernmentNumbers"
+          [class.invalid]="isSaved && !isValid('GovernmentNumbers')"
+        />
+      </div>
+    </form>
+    <div class="button">
+      <button class="save__button" (click)="save()">Забронировать</button>
+    </div>
+  </mat-card>
+</div>
+<div class="modal-panel" [class.modal-show]="isShowModal">
+  <div class="panel">
+    <div *ngIf="registrationForm.status === 'VALID'" class="panel__success">
+      <div class="panel__header">
+        <button (click)="isShowModal = false">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+      <div class="panel__content">
+        <mat-icon>check_circle</mat-icon> Забронировано
+      </div>
+    </div>
+    <div *ngIf="registrationForm.status === 'INVALID'" class="panel__error">
+      <div class="panel__header">
+        <button (click)="isShowModal = false">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+      <div class="panel__content">
+        <mat-icon>error</mat-icon> Заполните все поля формы регистрации!
+      </div>
+    </div>
+  </div>
+</div>
